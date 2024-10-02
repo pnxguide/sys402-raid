@@ -5,7 +5,9 @@ The goal of this assessment is to evaluate your understanding on multiple-disk s
 There will be two parts in this assessment: (1) multiple-disk system design, and (2) multiple-disk system implementation.
 
 ## Part 1 - Multiple-Disk System Design (50 points)
-You will be given three scenarios. You need to design an appropriate multiple-disk system for each scenario. Additionally, you need to quantitatively analyze your design againsts the given constraints to convince whether your design is appropriate.
+You will be given three scenarios. You need to design an appropriate multiple-disk system for each scenario. Additionally, you need to quantitatively analyze your design againsts the given constraints to convince whether your design is appropriate. You may want to use real-world data to support your answer.
+
+Please put your answer in `part1/scenario-[q].md` where `[q]` is the scenario number.
 
 ### Scenario 1 - HeartyTube for Speed (10 points)
 Alice would like to store HeartyTube's comments for doing [sentiment analysis](https://en.wikipedia.org/wiki/Sentiment_analysis). She collected more than 10 trillion comments (around 100 bytes each; 100 TB in total). At first, she used JBOD to build a virtual drive out of her 100 1-TB HDDs. However, she found that her system takes at least 1 week to analyze all of these data. Suppose that she used the fastest data structure and algorithm to analyze the data, how should she improve her system to decrease the analysis time. Note that she does not have much budget left.
@@ -40,7 +42,10 @@ The `hearty-store-put` should have one argument, which is the original file path
 hearty-store-put [store-id] [original file path]
 ```
 
-It should return a unique identifier of the object back to the user. For flexibility, you can use anything as the identifier (including, an integer, a string). I suggest you generate a unique identifier on the fly as an integer. If you do so, then when you use
+It should return a unique identifier (i.e., does not need to be unique across instances) of the object back to the user. For flexibility, you can use anything as the identifier (including, an integer, a string). I suggest you generate a unique identifier on the fly as an integer. Note that if the user uses `hearty-store-put` onto any existing unique identifier, **the new object will replace the old object**.
+
+
+For the `hearty-store-get`, the user should be able to use it as follows.
 
 ```sh
 hearty-store-get [store-id] [unique identifier]
@@ -88,7 +93,7 @@ hearty-store-ha 1 2 3
 The above command will create a group of three instances (which are stores 1, 2, and 3) and a parity file based on them. The parity file will be 1024 MB large. It will be computed by XORing a bit from each store together, similarly to the parity disk in class.
 
 #### Subtask #3.1 - Create a parity when doing fault-free write (5 points)
-When doing `hearty-store-put`, the parity file may need to be recomputed accordingly.
+When doing `hearty-store-put` (for either creating or modifying an object), the parity file may need to be recomputed accordingly.
 
 #### Subtask #3.2 - Implement degraded read and write (10 points)
 When one of the instances in the group is destroyed, the group will change into the *degrade* mode. When listing all the instances, the user should be able to see the destroyed instance, perhaps as follows.
@@ -105,3 +110,11 @@ However, if more than one instances in the same group are destroyed, **the high-
 
 ### Extra Credit - Support store rebuild (5 points)
 You may want to implement `hearty-store-rebuild` that allows the user to rebuild the destroyed instance in the high-availability group.
+
+### Code Style
+You should follow a good coding convention. In this class, please stick with the CMU 15-213's Code Style.
+
+https://www.cs.cmu.edu/afs/cs/academic/class/15213-f24/www/codeStyle.html
+
+### Programming Language
+You can use C, C++, Rust to implement this project. Other programming languages rather than these must be approved by the instructor first. (But, definitely, Python cannot)
