@@ -118,3 +118,6 @@ https://www.cs.cmu.edu/afs/cs/academic/class/15213-f24/www/codeStyle.html
 
 ### Programming Language
 You can use C, C++, Rust to implement this project. Other programming languages rather than these must be approved by the instructor first. (But, definitely, Python cannot)
+
+### Submission
+Please put all of your code and **instructions to run the code** in the `part2/`. You should describe a bit on your code structure so that it is easy for me to navigate through your code when grading. All of the instructions and descriptions should be in `part2/README.md`.
